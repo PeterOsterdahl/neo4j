@@ -1,4 +1,38 @@
 //1.3 Connect people to seatings
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/PeterOsterdahl/neo4j/master/Seatings_1.txt' AS LINE FIELDTERMINATOR ';' MATCH (e:employee{id:toInteger(LINE.ID)}),(t:table{id:toInteger(LINE.TABLE)}) MERGE (e)-[:SEATING_1]->(t) RETURN e,t;
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/PeterOsterdahl/neo4j/master/Seatings_2.txt' AS LINE FIELDTERMINATOR ';' MATCH (e:employee{id:toInteger(LINE.ID)}),(t:table{id:toInteger(LINE.TABLE)}) MERGE (e)-[:SEATING_2]->(t) RETURN e,t;
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/PeterOsterdahl/neo4j/master/Seatings_3.txt' AS LINE FIELDTERMINATOR ';' MATCH (e:employee{id:toInteger(LINE.ID)}),(t:table{id:toInteger(LINE.TABLE)}) MERGE (e)-[:SEATING_3]->(t) RETURN e,t;
+MATCH (e:employee)-[r]->(t:table)
+DELETE r;
+
+UNWIND([1,2,3]) AS seating
+WITH seating
+MATCH (e:employee)
+WITH e, rand() AS r, seating
+ORDER BY r
+WITH collect(e) as emps , seating
+MATCH (t:table)
+WITH emps, collect (t) AS tables, seating
+UNWIND range(0, size(emps)-1) as pos
+WITH emps[pos] AS emp,tables[pos%8] AS tableNo, seating
+MERGE (emp)-[:SEATING{seatingNo:seating}]->(tableNo);
+
+MATCH (e:employee)
+WITH e, rand() AS r
+ORDER BY r
+WITH collect(e) as emps 
+MATCH (t:table)
+WITH emps, collect (t) AS tables
+UNWIND range(0, size(emps)-1) as pos
+WITH emps[pos] AS emp,tables[pos%8] AS tableNo
+MERGE (emp)-[:SEATING_2]->(tableNo);
+
+MATCH (e:employee)
+WITH e, rand() AS r
+ORDER BY r
+WITH collect(e) as emps 
+MATCH (t:table)
+WITH emps, collect (t) AS tables
+UNWIND range(0, size(emps)-1) as pos
+WITH emps[pos] AS emp,tables[pos%8] AS tableNo
+MERGE (emp)-[:SEATING_3]->(tableNo);
+
+MATCH (n:employee)-[]-(t:table)
+RETURN n,t
