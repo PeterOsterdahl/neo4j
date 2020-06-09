@@ -1,4 +1,4 @@
 //2.2 In detail
 MATCH (n:employee)-[]-(t:table)
-where n.id IN [8,10,13] AND t.id IN [2,3,5]
+where n.id IN [] AND t.id IN []
 RETURN n,t

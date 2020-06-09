@@ -1,5 +1,5 @@
 //3.1 Create direct relation who meets who
-// First delete pre existing relations
+// First delete pre existing relations(because we are doing this multiple times)
 MATCH (n)-[r:MEETS]-(m)
 DELETE r;
 // Then readd
