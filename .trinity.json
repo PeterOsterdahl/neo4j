@@ -1,0 +1,9 @@
+{
+  "dbAddress": "bolt://3.83.18.124:34744",
+  "username": "neo4j",
+  "password": "carrier-projectile-computer",
+  "clearChannelOnSave": true,
+  "writeOutputToJSON": true,
+  "JSONOutputRelativePath": "./",
+  "outputFilename": "output.json"
+}
